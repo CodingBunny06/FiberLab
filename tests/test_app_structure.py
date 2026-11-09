@@ -68,8 +68,7 @@ def test_landing_page_renders():
 
     assert not app_test.exception
     assert [element.value for element in app_test.title] == ["FiberLab"]
-    assert any("Version 1.0 capabilities" in element.value for element in app_test.markdown)
-
+    assert any("Explore the Laboratory" in element.value for element in app_test.markdown)
 
 @pytest.mark.parametrize(
     ("module_name", "title"),

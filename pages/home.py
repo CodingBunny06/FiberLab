@@ -1,3 +1,4 @@
+
 """FiberLab landing page."""
 
 import streamlit as st
@@ -5,43 +6,71 @@ import streamlit as st
 
 def render() -> None:
     """Render the FiberLab landing page."""
+
     st.title("FiberLab")
-    st.subheader("A virtual optical fiber laboratory")
-    st.write(
-        "FiberLab is a focused engineering workspace for understanding how optical "
-        "fiber systems behave. Use the navigation to move between guided laboratory "
-        "experiences as the simulator grows."
+    st.subheader("Interactive Optical Fiber Communication Simulator")
+
+    st.markdown(
+        """
+        Explore the science behind optical fiber communication
+        through interactive experiments, mathematical models,
+        and scientific visualizations.
+        """
     )
 
     st.divider()
-    st.markdown("### Version 1.0 capabilities")
-    capability_columns = st.columns(3)
-    capabilities = (
+
+    st.markdown("### Explore the Laboratory")
+
+    capabilities = [
+    (
+        "🔭 Fiber Explorer",
         (
-            capability_columns[0],
-            ":material/explore:",
-            "Fiber Explorer",
-            "Review the geometry and guiding concepts that define an optical fiber.",
+            "Understand optical fiber geometry, refractive indices, "
+            "numerical aperture, acceptance angle, and total internal reflection."
         ),
+    ),
+    (
+        "📉 Attenuation Laboratory",
         (
-            capability_columns[1],
-            ":material/science:",
-            "Attenuation Laboratory",
-            "A dedicated workspace for investigating optical loss and attenuation.",
+            "Investigate optical power loss over fiber length and "
+            "study how attenuation affects signal strength."
         ),
+    ),
+    (
+        "〰️ Signal Propagation",
         (
-            capability_columns[2],
-            ":material/graphic_eq:",
-            "Signal Propagation",
-            "Explore the concepts behind signal travel, dispersion, and transmission.",
+            "Explore signal transmission, waveform behaviour, "
+            "and the fundamentals of pulse broadening."
         ),
+    ),
+    ]
+
+    columns = st.columns(3)
+
+    for column, (title, description) in zip(columns, capabilities):
+        with column, st.container(border=True):
+         st.markdown(f"#### {title}")
+         st.write(description)
+
+    st.divider()
+
+    st.markdown("### About FiberLab")
+
+    st.write(
+        """
+        FiberLab is an educational engineering platform designed
+        to make optical fiber concepts easier to understand.
+
+        Our goal is to connect theoretical physics with practical
+        simulation through calculations, graphs, and interactive
+        laboratory experiences.
+        """
     )
-    for column, icon, title, description in capabilities:
-        with column:
-            st.markdown(f"#### {icon} {title}")
-            st.caption(description)
 
     st.info(
-        "The v1.0 interface establishes the laboratory workflow. Interactive "
-        "physics models and visualizations will be added in future iterations."
+        "🚧 Version 1.0 — Under Development. "
+        "Core physics models and interactive simulations are being built."
     )
+
+    st.caption("FiberLab | Optical Fiber Communication Laboratory")
