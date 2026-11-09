@@ -6,21 +6,61 @@ import streamlit as st
 
 from pages.attenuation_laboratory import render as render_attenuation_laboratory
 from pages.fiber_explorer import render as render_fiber_explorer
+from pages.home import render as render_home
 from pages.signal_propagation import render as render_signal_propagation
 
-PAGE_RENDERERS = {
-    "Fiber Explorer": render_fiber_explorer,
-    "Attenuation Laboratory": render_attenuation_laboratory,
-    "Signal Propagation": render_signal_propagation,
-}
+PAGE_DEFINITIONS = (
+    {
+        "render": render_home,
+        "title": "FiberLab",
+        "icon": ":material/home:",
+        "url_path": "home",
+        "default": True,
+    },
+    {
+        "render": render_fiber_explorer,
+        "title": "Fiber Explorer",
+        "icon": ":material/explore:",
+        "url_path": "fiber-explorer",
+    },
+    {
+        "render": render_attenuation_laboratory,
+        "title": "Attenuation Laboratory",
+        "icon": ":material/science:",
+        "url_path": "attenuation-laboratory",
+    },
+    {
+        "render": render_signal_propagation,
+        "title": "Signal Propagation",
+        "icon": ":material/graphic_eq:",
+        "url_path": "signal-propagation",
+    },
+)
+
+
+def build_navigation():
+    """Build the native Streamlit navigation entries."""
+    return st.navigation(
+        [
+            st.Page(
+                definition["render"],
+                title=definition["title"],
+                icon=definition["icon"],
+                url_path=definition["url_path"],
+                default=definition.get("default", False),
+            )
+            for definition in PAGE_DEFINITIONS
+        ],
+        position="sidebar",
+    )
 
 
 def main() -> None:
     """Configure and render the Streamlit application."""
     st.set_page_config(page_title="FiberLab", page_icon="🔬", layout="wide")
 
-    selected_page = st.sidebar.radio("Navigation", tuple(PAGE_RENDERERS.keys()))
-    PAGE_RENDERERS[selected_page]()
+    navigation = build_navigation()
+    navigation.run()
 
 
 if __name__ == "__main__":
