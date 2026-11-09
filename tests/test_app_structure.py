@@ -82,12 +82,14 @@ def test_simulator_pages_render_placeholders(monkeypatch, module_name, title):
     module = importlib.import_module(module_name)
     rendered = {}
 
-    monkeypatch.setattr(module.st, "title", lambda value: rendered.setdefault("title", value))
-    monkeypatch.setattr(module.st, "caption", lambda value: rendered.setdefault("caption", value))
-    monkeypatch.setattr(module.st, "write", lambda value: rendered.setdefault("body", value))
-    monkeypatch.setattr(module.st, "divider", lambda: None)
-    monkeypatch.setattr(module.st, "subheader", lambda value: rendered.setdefault("subheader", value))
-    monkeypatch.setattr(module.st, "info", lambda value: rendered.setdefault("info", value))
+    import streamlit as st
+
+    monkeypatch.setattr(st, "title", lambda value: rendered.setdefault("title", value))
+    monkeypatch.setattr(st, "caption", lambda value: rendered.setdefault("caption", value))
+    monkeypatch.setattr(st, "write", lambda value: rendered.setdefault("body", value))
+    monkeypatch.setattr(st, "divider", lambda: None)
+    monkeypatch.setattr(st, "subheader", lambda value: rendered.setdefault("subheader", value))
+    monkeypatch.setattr(st, "info", lambda value: rendered.setdefault("info", value))
 
     module.render()
 

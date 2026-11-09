@@ -1,16 +1,21 @@
 """Fiber Explorer page."""
 
-import streamlit as st
+
+
+from components.page_layout import render_page_header, render_workspace
 
 
 def render() -> None:
     """Render the Fiber Explorer page."""
-    st.title("Fiber Explorer")
-    st.caption("Inspect the building blocks of an optical fiber.")
-    st.write(
-        "This laboratory is reserved for guided exploration of fiber geometry, "
-        "refractive indices, and light-guiding conditions."
+    render_page_header(
+        title="Fiber Explorer",
+        caption="Inspect the building blocks of an optical fiber.",
+        description=(
+            "Explore fiber geometry, refractive indices, "
+            "and the conditions that allow light to travel through an optical fiber."
+        ),
     )
-    st.divider()
-    st.subheader("Laboratory workspace")
-    st.info("Interactive fiber exploration tools are coming soon.")
+
+    render_workspace(
+        "Interactive fiber exploration tools are coming soon."
+    )

@@ -1,16 +1,19 @@
 """Signal Propagation page."""
 
-import streamlit as st
+from components.page_layout import render_page_header, render_workspace
 
 
 def render() -> None:
     """Render the Signal Propagation page."""
-    st.title("Signal Propagation")
-    st.caption("Follow the journey of an optical signal through the fiber.")
-    st.write(
-        "This laboratory will provide a focused workspace for exploring signal "
-        "behavior, dispersion, and transmission distance."
+    render_page_header(
+        title="Signal Propagation",
+        caption="Follow the journey of an optical signal through the fiber.",
+        description=(
+            "Explore signal transmission, waveform behaviour, "
+            "and the fundamentals of pulse broadening and dispersion."
+        ),
     )
-    st.divider()
-    st.subheader("Laboratory workspace")
-    st.info("Interactive signal propagation tools are coming soon.")
+
+    render_workspace(
+        "Interactive signal propagation tools are coming soon."
+    )
