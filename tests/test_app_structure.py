@@ -1,9 +1,10 @@
 import importlib
 from pathlib import Path
 
-import app
 import pytest
 from streamlit.testing.v1 import AppTest
+
+import app
 
 
 def test_page_modules_import_cleanly():
