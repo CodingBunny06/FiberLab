@@ -42,29 +42,46 @@ def generate_report(project_root: Path) -> GuardianReport:
     )
 
 
+
 def format_report(report: GuardianReport) -> str:
-    """Format Guardian results into a readable text report."""
+    """Format a Guardian report into a readable diagnostic summary."""
+
     lines = [
         "FIBERLAB GUARDIAN REPORT",
-        "=" * 30,
+        "=" * 40,
+        "",
         f"Overall Status: {report.overall_status}",
-        f"Passed: {report.passed}",
-        f"Failed: {report.failed}",
+        "",
+        "SUMMARY",
+        "-" * 40,
+        f"Passed:  {report.passed}",
+        f"Failed:  {report.failed}",
         f"Pending: {report.pending}",
         "",
         "DIAGNOSTICS",
-        "-" * 30,
+        "-" * 40,
     ]
 
-    for diagnostic in report.diagnostics:
-        lines.extend(
-            [
-                f"[{diagnostic.status}] {diagnostic.file}",
-                f"Severity: {diagnostic.severity}",
-                f"Finding: {diagnostic.message}",
-                f"Recommendation: {diagnostic.recommendation}",
-                "",
-            ]
-        )
+    if not report.diagnostics:
+        lines.append("No diagnostics available.")
+    else:
+        for index, diagnostic in enumerate(report.diagnostics, start=1):
+            lines.extend(
+                [
+                    "",
+                    f"{index}. [{diagnostic.status}] {diagnostic.file}",
+                    f"   Severity: {diagnostic.severity}",
+                    f"   Finding: {diagnostic.message}",
+                    f"   Recommendation: {diagnostic.recommendation}",
+                ]
+            )
+
+    lines.extend(
+        [
+            "",
+            "=" * 40,
+            "End of Guardian Report",
+        ]
+    )
 
     return "\n".join(lines)
