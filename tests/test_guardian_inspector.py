@@ -191,3 +191,56 @@ from physics.attenuation import calculate_loss
         and "calculate_loss" in finding.message
         for finding in findings
     )
+
+def test_syntax_error_in_non_contract_module_is_detected(tmp_path):
+    create_module(
+        tmp_path,
+        "visualization/helpers.py",
+        "def create_figure(:",
+    )
+
+    findings = inspect_project(tmp_path)
+
+    assert any(
+        finding.status == "FAIL"
+        and finding.file == "visualization/helpers.py"
+        and "Unable to parse module" in finding.message
+        for finding in findings
+    )
+
+
+def test_streamlit_import_in_nested_module_is_detected(tmp_path):
+    create_module(
+        tmp_path,
+        "visualization/helpers/renderer.py",
+        "import streamlit",
+    )
+
+    findings = inspect_project(tmp_path)
+
+    assert any(
+        finding.status == "FAIL"
+        and finding.file == "visualization/helpers/renderer.py"
+        and "Streamlit import" in finding.message
+        for finding in findings
+    )
+
+
+def test_contract_function_in_nested_module_is_detected(tmp_path):
+    create_module(
+        tmp_path,
+        "physics/helpers/numerical.py",
+        """
+def calculate_numerical_aperture(n_core, n_cladding):
+    return 0.0
+""",
+    )
+
+    findings = inspect_project(tmp_path)
+
+    assert any(
+        finding.status == "FAIL"
+        and finding.file == "physics/helpers/numerical.py"
+        and "belongs in physics/numerical_aperture.py" in finding.message
+        for finding in findings
+    )

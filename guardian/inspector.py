@@ -137,7 +137,7 @@ def inspect_project(project_root: Path) -> list[InspectionFinding]:
         if not package_path.exists():
             continue
 
-        for file_path in package_path.glob("*.py"):
+        for file_path in package_path.rglob("*.py"):
             try:
                 module = ast.parse(
                     file_path.read_text(encoding="utf-8"),
@@ -173,7 +173,7 @@ def inspect_project(project_root: Path) -> list[InspectionFinding]:
         if not package_path.exists():
             continue
 
-        for file_path in package_path.glob("*.py"):
+        for file_path in package_path.rglob("*.py"):
             relative_path = file_path.relative_to(project_root).as_posix()
 
             try:
@@ -202,7 +202,8 @@ def inspect_project(project_root: Path) -> list[InspectionFinding]:
                         )
                     )
     findings.extend(inspect_internal_imports(project_root))
-    
+    findings.extend(inspect_package_syntax(project_root, findings))
+
     return findings
 
 
@@ -316,4 +317,43 @@ def inspect_internal_imports(project_root: Path) -> list[InspectionFinding]:
                         )
                     )
 
+    return findings
+
+def inspect_package_syntax(
+    project_root: Path,
+    existing_findings: list[InspectionFinding],
+) -> list[InspectionFinding]:
+    """Detect syntax errors in all physics and visualization Python files."""
+    findings = []
+
+    already_reported = {
+        finding.file
+        for finding in existing_findings
+        if finding.status == "FAIL"
+        and "Unable to parse module" in finding.message
+    }
+
+    for package in ("physics", "visualization"):
+        package_path = project_root / package
+
+        if not package_path.exists():
+            continue
+
+        for file_path in package_path.rglob("*.py"):
+            relative_path = file_path.relative_to(project_root).as_posix()
+
+            if relative_path in already_reported:
+                continue
+
+            try:
+                source = file_path.read_text(encoding="utf-8")
+                ast.parse(source, filename=str(file_path))
+            except (SyntaxError, UnicodeDecodeError) as error:
+                findings.append(
+                    InspectionFinding(
+                        "FAIL",
+                        relative_path,
+                        f"Unable to parse module: {error}",
+                    )
+                )
     return findings
