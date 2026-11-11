@@ -66,3 +66,51 @@ def create_integration_workspace(
     )
 
     return destination
+
+def integrate_candidate_modules(
+    candidate_root: Path,
+    workspace_root: Path,
+    selected_files: list[str],
+) -> list[Path]:
+    """Copy selected candidate modules into an isolated integration workspace."""
+    candidate_root = candidate_root.resolve()
+    workspace_root = workspace_root.resolve()
+
+    if not candidate_root.is_dir():
+        raise FileNotFoundError(
+            f"Candidate directory does not exist: {candidate_root}"
+        )
+
+    if not workspace_root.is_dir():
+        raise FileNotFoundError(
+            f"Integration workspace does not exist: {workspace_root}"
+        )
+
+    integrated_files = []
+
+    for relative_path in selected_files:
+        relative_path = Path(relative_path)
+
+        if relative_path.is_absolute() or ".." in relative_path.parts:
+            raise ValueError(f"Unsafe candidate path: {relative_path}")
+
+        source_file = (candidate_root / relative_path).resolve()
+
+        if not source_file.is_relative_to(candidate_root):
+            raise ValueError(f"Unsafe candidate path: {relative_path}")
+
+        if not source_file.is_file():
+            raise FileNotFoundError(
+                f"Candidate file does not exist: {source_file}"
+            )
+
+        if source_file.is_symlink():
+            raise ValueError(f"Symlinks are not allowed: {relative_path}")
+
+        destination_file = workspace_root / relative_path
+        destination_file.parent.mkdir(parents=True, exist_ok=True)
+
+        shutil.copy2(source_file, destination_file)
+        integrated_files.append(destination_file)
+
+    return integrated_files
