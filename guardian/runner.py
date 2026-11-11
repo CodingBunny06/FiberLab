@@ -48,25 +48,28 @@ def run_guardian(
             pending=pending,
         )
 
+    
+    
     if run_quality_checks:
-        quality_results = [
-            run_command(
-                ["ruff", "check", "."],
-                workspace_root,
-                timeout_seconds,
-            ),
-            run_command(
-                ["python", "-m", "pytest", "-v"],
-                workspace_root,
-                timeout_seconds,
-            ),
+        commands = [
+            ["ruff", "check", "."],
+            ["python", "-m", "pytest", "-v"],
         ]
 
-        for result in quality_results:
-            if result.status != "PASS":
-                failed += 1
+        for command in commands:
+            result = run_command(
+                command,
+                workspace_root,
+                timeout_seconds,
+            )
 
-            diagnostics.append(_command_diagnostic(result))
+            diagnostic = _command_diagnostic(result)
+            diagnostics.append(diagnostic)
+
+            if result.status == "PASS":
+                passed += 1
+            else:
+                failed += 1
 
     return GuardianReport(
         diagnostics=diagnostics,
@@ -74,7 +77,6 @@ def run_guardian(
         failed=failed,
         pending=pending,
     )
-
 
 def _command_diagnostic(result: CommandResult):
     """Convert an automated command result into a Guardian diagnostic."""
