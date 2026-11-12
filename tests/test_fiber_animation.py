@@ -68,9 +68,9 @@ def test_tir_labeling_and_traces(tir_ray_data: dict[str, Any]) -> None:
     """3. Verify TIR regime trace labels, reflection points, and title text."""
     fig = create_fiber_ray_figure(tir_ray_data)
     trace_names = [trace.name for trace in fig.data if trace.name]
-    assert "Incident Launch Ray" in trace_names
-    assert "Guided Ray (TIR)" in trace_names
-    assert "Interface Reflection Points" in trace_names
+    assert "Incident Ray" in trace_names
+    assert "Propagating Core Ray" in trace_names
+    assert "Reflection Point" in trace_names
     assert "Regime: Total Internal Reflection (TIR)" in fig.layout.title.text
 
 
@@ -80,7 +80,7 @@ def test_non_tir_labeling_and_refracted_rays(
     """4. Verify non-TIR regime labels and refracted cladding loss traces."""
     fig = create_fiber_ray_figure(non_tir_ray_data)
     trace_names = [trace.name for trace in fig.data if trace.name]
-    assert "Attenuated Ray (Refracted)" in trace_names
+    assert "Refracted Cladding Loss" in trace_names
     assert "Refracted Cladding Loss" in trace_names
     assert "Regime: Refraction / Cladding Loss" in fig.layout.title.text
 
