@@ -1,19 +1,24 @@
 
-name: FiberLab Guardian
+name: FiberLab CI
 
 on:
   pull_request:
-    branches: [main]
+    branches:
+      - main
+
   push:
     branches:
       - main
       - "feature/**"
+      - "feat/**"
+
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  quality:
+  code-quality:
     name: Code Quality
     runs-on: ubuntu-latest
 
@@ -25,20 +30,21 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: pip
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          python -m pip install -r requirements.txt ruff
 
-      - name: Run Ruff
+      - name: Run Ruff lint
         run: ruff check .
 
-  tests:
+      - name: Check formatting
+        run: ruff format --check .
+
+  automated-tests:
     name: Automated Tests
     runs-on: ubuntu-latest
-    needs: quality
 
     steps:
       - name: Checkout repository
@@ -48,12 +54,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: pip
 
-      - name: Install dependencies
+      - name: Install project dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          python -m pip install -r requirements.txt
 
-      - name: Run all tests
+      - name: Run test suite
         run: python -m pytest -v
