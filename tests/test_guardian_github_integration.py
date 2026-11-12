@@ -1,6 +1,4 @@
-
 """Tests for GitHub pull request integration."""
-
 
 import pytest
 
@@ -26,12 +24,8 @@ def test_inspects_pull_request_using_existing_guardian_pipeline(
     )
 
     changed_files = [
-        ChangedFile(
-            "physics/attenuation.py", "modified", 20, 5, 25
-        ),
-        ChangedFile(
-            "physics/old_module.py", "removed", 0, 10, 10
-        ),
+        ChangedFile("physics/attenuation.py", "modified", 20, 5, 25),
+        ChangedFile("physics/old_module.py", "removed", 0, 10, 10),
     ]
 
     class FakeGitHubClient:
@@ -94,13 +88,9 @@ def test_inspects_pull_request_using_existing_guardian_pipeline(
 
     assert download_calls["repository"] == "contributor/FiberLab"
     assert download_calls["commit_sha"] == "a" * 40
-    assert download_calls["selected_files"] == [
-        "physics/attenuation.py"
-    ]
+    assert download_calls["selected_files"] == ["physics/attenuation.py"]
 
-    assert runner_calls["selected_files"] == [
-        "physics/attenuation.py"
-    ]
+    assert runner_calls["selected_files"] == ["physics/attenuation.py"]
     assert runner_calls["run_quality_checks"] is False
 
 

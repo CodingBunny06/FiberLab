@@ -1,12 +1,15 @@
-
 """Download selected GitHub pull request files into an isolated workspace."""
 
 import os
 import re
+import shutil
+import ssl
 from pathlib import Path, PurePosixPath
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
+
+import certifi
 
 
 class CandidateDownloadError(Exception):
@@ -67,10 +70,7 @@ def download_candidate_files(
     if isinstance(timeout, bool) or not isinstance(timeout, int) or timeout <= 0:
         raise ValueError("Timeout must be a positive integer.")
 
-    validated_paths = [
-        _validate_file_path(file_path)
-        for file_path in selected_files
-    ]
+    validated_paths = [_validate_file_path(file_path) for file_path in selected_files]
 
     if len(set(validated_paths)) != len(validated_paths):
         raise ValueError("Duplicate candidate file paths are not allowed.")
@@ -86,6 +86,7 @@ def download_candidate_files(
     auth_token = token or os.getenv("GITHUB_TOKEN")
     downloaded_files = []
 
+    ssl_context = ssl.create_default_context(cafile=certifi.where())
     try:
         for relative_path in validated_paths:
             encoded_path = quote(relative_path.as_posix(), safe="/")
@@ -105,7 +106,11 @@ def download_candidate_files(
             request = Request(url, headers=headers, method="GET")
 
             try:
-                with urlopen(request, timeout=timeout) as response:
+                with urlopen(
+                    request,
+                    timeout=timeout,
+                    context=ssl_context,
+                ) as response:
                     content = response.read()
 
             except HTTPError as error:
@@ -127,7 +132,6 @@ def download_candidate_files(
 
     except Exception:
         # Remove an incomplete candidate workspace.
-        import shutil
 
         shutil.rmtree(destination, ignore_errors=True)
         raise

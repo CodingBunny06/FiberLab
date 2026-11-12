@@ -1,4 +1,3 @@
-
 """Tests for the Guardian GitHub candidate downloader."""
 
 import io
@@ -18,7 +17,7 @@ COMMIT_SHA = "a" * 40
 def test_downloads_candidate_file(monkeypatch, tmp_path):
     content = b"def calculate_output_power():\n    return 10\n"
 
-    def mock_urlopen(request, timeout):
+    def mock_urlopen(request, timeout, context):
         assert COMMIT_SHA in request.full_url
         return io.BytesIO(content)
 
@@ -45,7 +44,7 @@ def test_downloads_candidate_file(monkeypatch, tmp_path):
 def test_downloads_multiple_candidate_files(monkeypatch, tmp_path):
     responses = [b"first file", b"second file"]
 
-    def mock_urlopen(request, timeout):
+    def mock_urlopen(request, timeout, context):
         return io.BytesIO(responses.pop(0))
 
     monkeypatch.setattr(
@@ -95,7 +94,7 @@ def test_refuses_existing_destination(monkeypatch, tmp_path):
 
 
 def test_handles_github_http_error(monkeypatch, tmp_path):
-    def mock_urlopen(request, timeout):
+    def mock_urlopen(request, timeout, context):
         raise HTTPError(
             request.full_url,
             404,
@@ -119,7 +118,7 @@ def test_handles_github_http_error(monkeypatch, tmp_path):
 
 
 def test_handles_network_error(monkeypatch, tmp_path):
-    def mock_urlopen(request, timeout):
+    def mock_urlopen(request, timeout, context):
         raise URLError("Connection unavailable")
 
     monkeypatch.setattr(

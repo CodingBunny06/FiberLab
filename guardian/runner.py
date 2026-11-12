@@ -1,4 +1,3 @@
-
 """Coordinate the FiberLab Guardian integration workflow."""
 
 from pathlib import Path
@@ -48,8 +47,6 @@ def run_guardian(
             pending=pending,
         )
 
-    
-    
     if run_quality_checks:
         commands = [
             ["ruff", "check", "."],
@@ -78,6 +75,7 @@ def run_guardian(
         pending=pending,
     )
 
+
 def _command_diagnostic(result: CommandResult):
     """Convert an automated command result into a Guardian diagnostic."""
 
@@ -85,10 +83,7 @@ def _command_diagnostic(result: CommandResult):
         status="PASS" if result.status == "PASS" else "FAIL",
         severity="INFO" if result.status == "PASS" else "HIGH",
         file="integration workspace",
-        message=(
-            f"Automated check: {result.status} "
-            f"(exit code: {result.return_code})"
-        ),
+        message=(f"Automated check: {result.status} (exit code: {result.return_code})"),
         recommendation=(
             "No action required."
             if result.status == "PASS"

@@ -1,4 +1,3 @@
-
 """Generate consolidated reports from FiberLab Guardian inspections."""
 
 from dataclasses import dataclass
@@ -40,7 +39,6 @@ def generate_report(project_root: Path) -> GuardianReport:
         failed=sum(item.status == "FAIL" for item in diagnostics),
         pending=sum(item.status == "PENDING" for item in diagnostics),
     )
-
 
 
 def format_report(report: GuardianReport) -> str:

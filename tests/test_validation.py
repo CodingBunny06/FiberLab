@@ -1,4 +1,3 @@
-
 """Tests for FiberLab input validation."""
 
 import pytest

@@ -63,6 +63,7 @@ def test_github_client_rejects_invalid_pr_number():
             0,
         )
 
+
 def test_github_client_rejects_boolean_pr_number():
     client = GitHubClient()
 
@@ -82,6 +83,7 @@ def test_github_client_rejects_malformed_repository():
             12,
         )
 
+
 def test_get_pull_request_retrieves_metadata_and_uses_token(monkeypatch):
     """Verify PR metadata retrieval and authentication."""
 
@@ -97,7 +99,7 @@ def test_get_pull_request_retrieves_metadata_and_uses_token(monkeypatch):
         },
     }
 
-    def mock_urlopen(request, timeout):
+    def mock_urlopen(request, timeout, context):
         assert request.get_header("Authorization") == "Bearer test-token"
         assert timeout == 15
         return io.BytesIO(json.dumps(response_data).encode("utf-8"))
@@ -140,11 +142,9 @@ def test_list_changed_files_handles_pagination(monkeypatch):
     responses = [first_page, second_page]
     requested_urls = []
 
-    def mock_urlopen(request, timeout):
+    def mock_urlopen(request, timeout, context):
         requested_urls.append(request.full_url)
-        return io.BytesIO(
-            json.dumps(responses.pop(0)).encode("utf-8")
-        )
+        return io.BytesIO(json.dumps(responses.pop(0)).encode("utf-8"))
 
     monkeypatch.setattr("guardian.github_client.urlopen", mock_urlopen)
 
@@ -160,7 +160,7 @@ def test_list_changed_files_handles_pagination(monkeypatch):
 def test_github_client_handles_http_errors(monkeypatch):
     """Verify GitHub HTTP errors are converted into API errors."""
 
-    def mock_urlopen(request, timeout):
+    def mock_urlopen(request, timeout, context):
         raise HTTPError(
             request.full_url,
             404,
@@ -180,7 +180,7 @@ def test_github_client_handles_http_errors(monkeypatch):
 def test_github_client_handles_network_errors(monkeypatch):
     """Verify network failures are handled cleanly."""
 
-    def mock_urlopen(request, timeout):
+    def mock_urlopen(request, timeout, context):
         raise URLError("Connection unavailable")
 
     monkeypatch.setattr("guardian.github_client.urlopen", mock_urlopen)

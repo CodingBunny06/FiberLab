@@ -1,4 +1,3 @@
-
 """End-to-end tests for the FiberLab Guardian pipeline."""
 
 from guardian.reporter import generate_report

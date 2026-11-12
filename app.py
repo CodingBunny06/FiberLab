@@ -6,6 +6,7 @@ import streamlit as st
 
 from pages.attenuation_laboratory import render as render_attenuation_laboratory
 from pages.fiber_explorer import render as render_fiber_explorer
+from pages.guardian_dashboard import render as render_guardian
 from pages.home import render as render_home
 from pages.signal_propagation import render as render_signal_propagation
 
@@ -34,6 +35,12 @@ PAGE_DEFINITIONS = (
         "title": "Signal Propagation",
         "icon": ":material/graphic_eq:",
         "url_path": "signal-propagation",
+    },
+    {
+        "render": render_guardian,
+        "title": "Guardian",
+        "icon": ":material/shield:",
+        "url_path": "guardian",
     },
 )
 

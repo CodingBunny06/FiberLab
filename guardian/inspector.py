@@ -1,4 +1,3 @@
-
 """Inspect FiberLab modules against their agreed integration contracts."""
 
 import ast
@@ -99,9 +98,7 @@ def inspect_project(project_root: Path) -> list[InspectionFinding]:
                 )
                 continue
 
-            actual_parameters = tuple(
-                argument.arg for argument in function.args.args
-            )
+            actual_parameters = tuple(argument.arg for argument in function.args.args)
 
             if (
                 actual_parameters != expected_parameters
@@ -188,10 +185,7 @@ def inspect_project(project_root: Path) -> list[InspectionFinding]:
                 imports_streamlit = (
                     isinstance(node, ast.Import)
                     and any(alias.name == "streamlit" for alias in node.names)
-                ) or (
-                    isinstance(node, ast.ImportFrom)
-                    and node.module == "streamlit"
-                )
+                ) or (isinstance(node, ast.ImportFrom) and node.module == "streamlit")
 
                 if imports_streamlit:
                     findings.append(
@@ -205,7 +199,6 @@ def inspect_project(project_root: Path) -> list[InspectionFinding]:
     findings.extend(inspect_package_syntax(project_root, findings))
 
     return findings
-
 
 
 def inspect_internal_imports(project_root: Path) -> list[InspectionFinding]:
@@ -240,9 +233,7 @@ def inspect_internal_imports(project_root: Path) -> list[InspectionFinding]:
                 if root_package not in project_packages:
                     continue
 
-                module_path = project_root.joinpath(
-                    *imported_module.split(".")
-                )
+                module_path = project_root.joinpath(*imported_module.split("."))
 
                 target_file = module_path.with_suffix(".py")
                 target_init = module_path / "__init__.py"
@@ -319,6 +310,7 @@ def inspect_internal_imports(project_root: Path) -> list[InspectionFinding]:
 
     return findings
 
+
 def inspect_package_syntax(
     project_root: Path,
     existing_findings: list[InspectionFinding],
@@ -329,8 +321,7 @@ def inspect_package_syntax(
     already_reported = {
         finding.file
         for finding in existing_findings
-        if finding.status == "FAIL"
-        and "Unable to parse module" in finding.message
+        if finding.status == "FAIL" and "Unable to parse module" in finding.message
     }
 
     for package in ("physics", "visualization"):

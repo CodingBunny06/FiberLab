@@ -1,4 +1,3 @@
-
 """Tests for the FiberLab Guardian error detector."""
 
 from guardian.error_detector import analyze_findings, classify_finding

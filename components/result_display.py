@@ -1,4 +1,3 @@
-
 """Reusable result display components for FiberLab."""
 
 import streamlit as st

@@ -12,14 +12,9 @@ def calculate_numerical_aperture(n_core, cladding_index):
 
     module = ast.parse(incorrect_source)
 
-    function = next(
-        node for node in module.body
-        if isinstance(node, ast.FunctionDef)
-    )
+    function = next(node for node in module.body if isinstance(node, ast.FunctionDef))
 
-    actual_parameters = tuple(
-        argument.arg for argument in function.args.args
-    )
+    actual_parameters = tuple(argument.arg for argument in function.args.args)
 
     assert actual_parameters != expected_parameters
     assert actual_parameters == ("n_core", "cladding_index")

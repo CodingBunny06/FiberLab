@@ -1,4 +1,3 @@
-
 """Input validation utilities for FiberLab."""
 
 import math

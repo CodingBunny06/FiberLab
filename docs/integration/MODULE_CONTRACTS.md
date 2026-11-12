@@ -88,11 +88,7 @@ File: `physics/numerical_aperture.py`
 
 Function:
 ```python
-def calculate_numerical_aperture(
-    n_core: float,
-    n_cladding: float
-) -> float:
-    ...
+def calculate_numerical_aperture(n_core: float, n_cladding: float) -> float: ...
 ```
 
 Inputs:
@@ -117,11 +113,7 @@ File: `physics/numerical_aperture.py`
 
 Function:
 ```python
-def calculate_critical_angle(
-    n_core: float,
-    n_cladding: float
-) -> float:
-    ...
+def calculate_critical_angle(n_core: float, n_cladding: float) -> float: ...
 ```
 
 Output:
@@ -134,11 +126,8 @@ File: `physics/attenuation.py`
 Function:
 ```python
 def calculate_output_power(
-    input_power_mw: float,
-    attenuation_db_per_km: float,
-    length_km: float
-) -> float:
-    ...
+    input_power_mw: float, attenuation_db_per_km: float, length_km: float
+) -> float: ...
 ```
 
 Output:
@@ -150,11 +139,7 @@ File: `physics/attenuation.py`
 
 Function:
 ```python
-def calculate_total_loss(
-    attenuation_db_per_km: float,
-    length_km: float
-) -> float:
-    ...
+def calculate_total_loss(attenuation_db_per_km: float, length_km: float) -> float: ...
 ```
 
 Output:

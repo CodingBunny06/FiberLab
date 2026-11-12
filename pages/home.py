@@ -1,4 +1,3 @@
-
 """FiberLab landing page."""
 
 import streamlit as st
@@ -23,35 +22,35 @@ def render() -> None:
     st.markdown("### Explore the Laboratory")
 
     capabilities = [
-    (
-        "🔭 Fiber Explorer",
         (
-            "Understand optical fiber geometry, refractive indices, "
-            "numerical aperture, acceptance angle, and total internal reflection."
+            "🔭 Fiber Explorer",
+            (
+                "Understand optical fiber geometry, refractive indices, "
+                "numerical aperture, acceptance angle, and total internal reflection."
+            ),
         ),
-    ),
-    (
-        "📉 Attenuation Laboratory",
         (
-            "Investigate optical power loss over fiber length and "
-            "study how attenuation affects signal strength."
+            "📉 Attenuation Laboratory",
+            (
+                "Investigate optical power loss over fiber length and "
+                "study how attenuation affects signal strength."
+            ),
         ),
-    ),
-    (
-        "〰️ Signal Propagation",
         (
-            "Explore signal transmission, waveform behaviour, "
-            "and the fundamentals of pulse broadening."
+            "〰️ Signal Propagation",
+            (
+                "Explore signal transmission, waveform behaviour, "
+                "and the fundamentals of pulse broadening."
+            ),
         ),
-    ),
     ]
 
     columns = st.columns(3)
 
     for column, (title, description) in zip(columns, capabilities):
         with column, st.container(border=True):
-         st.markdown(f"#### {title}")
-         st.write(description)
+            st.markdown(f"#### {title}")
+            st.write(description)
 
     st.divider()
 

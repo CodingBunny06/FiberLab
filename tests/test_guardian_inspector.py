@@ -1,4 +1,3 @@
-
 """Tests for the FiberLab Guardian code inspector."""
 
 from pathlib import Path
@@ -36,8 +35,7 @@ def calculate_critical_angle(n_core, n_cladding):
     findings = inspect_project(tmp_path)
 
     assert any(
-        finding.status == "PASS"
-        and "calculate_numerical_aperture" in finding.message
+        finding.status == "PASS" and "calculate_numerical_aperture" in finding.message
         for finding in findings
     )
 
@@ -58,8 +56,7 @@ def calculate_critical_angle(n_core, n_cladding):
     findings = inspect_project(tmp_path)
 
     assert any(
-        finding.status == "FAIL"
-        and "incompatible signature" in finding.message
+        finding.status == "FAIL" and "incompatible signature" in finding.message
         for finding in findings
     )
 
@@ -74,8 +71,7 @@ def test_syntax_error_is_detected(tmp_path):
     findings = inspect_project(tmp_path)
 
     assert any(
-        finding.status == "FAIL"
-        and "Unable to parse module" in finding.message
+        finding.status == "FAIL" and "Unable to parse module" in finding.message
         for finding in findings
     )
 
@@ -98,8 +94,7 @@ def calculate_critical_angle(n_core, n_cladding):
     findings = inspect_project(tmp_path)
 
     assert any(
-        finding.status == "FAIL"
-        and "Streamlit import" in finding.message
+        finding.status == "FAIL" and "Streamlit import" in finding.message
         for finding in findings
     )
 
@@ -117,8 +112,7 @@ def calculate_numerical_aperture(n_core, n_cladding):
     findings = inspect_project(tmp_path)
 
     assert any(
-        finding.status == "FAIL"
-        and "calculate_critical_angle" in finding.message
+        finding.status == "FAIL" and "calculate_critical_angle" in finding.message
         for finding in findings
     )
 
@@ -160,8 +154,7 @@ def calculate_critical_angle(n_core, n_cladding):
     findings = inspect_project(tmp_path)
 
     assert any(
-        finding.status == "FAIL"
-        and "physics.missing_module" in finding.message
+        finding.status == "FAIL" and "physics.missing_module" in finding.message
         for finding in findings
     )
 
@@ -187,10 +180,10 @@ from physics.attenuation import calculate_loss
     findings = inspect_project(tmp_path)
 
     assert any(
-        finding.status == "FAIL"
-        and "calculate_loss" in finding.message
+        finding.status == "FAIL" and "calculate_loss" in finding.message
         for finding in findings
     )
+
 
 def test_syntax_error_in_non_contract_module_is_detected(tmp_path):
     create_module(

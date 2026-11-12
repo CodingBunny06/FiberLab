@@ -1,4 +1,3 @@
-
 """Run automated quality checks for FiberLab Guardian."""
 
 import subprocess

@@ -1,4 +1,3 @@
-
 """Connect GitHub pull requests to the FiberLab Guardian pipeline."""
 
 from dataclasses import dataclass
@@ -45,9 +44,7 @@ def inspect_pull_request(
     if not downloadable_files:
         raise ValueError("The pull request contains no downloadable files.")
 
-    selected_paths = [
-        changed_file.path for changed_file in downloadable_files
-    ]
+    selected_paths = [changed_file.path for changed_file in downloadable_files]
 
     # A PR's head commit may belong to a contributor's fork.
     download_repository = pull_request.head_repo or repository

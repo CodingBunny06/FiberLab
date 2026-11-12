@@ -1,4 +1,3 @@
-
 """Classify and explain findings produced by FiberLab Guardian."""
 
 from dataclasses import dataclass

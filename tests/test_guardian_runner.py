@@ -1,6 +1,4 @@
-
 """Tests for the FiberLab Guardian execution pipeline."""
-
 
 from guardian.runner import run_guardian
 

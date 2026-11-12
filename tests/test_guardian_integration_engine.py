@@ -1,6 +1,4 @@
-
 """Tests for the FiberLab Guardian integration engine."""
-
 
 import pytest
 
@@ -20,9 +18,7 @@ def test_workspace_copies_project_files(tmp_path):
     result = create_integration_workspace(source, destination)
 
     assert result == destination
-    assert (destination / "app.py").read_text(encoding="utf-8") == (
-        "print('FiberLab')"
-    )
+    assert (destination / "app.py").read_text(encoding="utf-8") == ("print('FiberLab')")
 
 
 def test_workspace_excludes_development_directories(tmp_path):

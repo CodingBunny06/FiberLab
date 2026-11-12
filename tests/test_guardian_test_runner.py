@@ -1,4 +1,3 @@
-
 """Tests for the FiberLab Guardian automated test runner."""
 
 import subprocess
@@ -71,9 +70,7 @@ def test_command_runs_in_requested_workspace(monkeypatch, tmp_path):
 
     def fake_run(*args, **kwargs):
         captured["cwd"] = kwargs["cwd"]
-        return subprocess.CompletedProcess(
-            args[0], 0, stdout="", stderr=""
-        )
+        return subprocess.CompletedProcess(args[0], 0, stdout="", stderr="")
 
     monkeypatch.setattr(subprocess, "run", fake_run)
 

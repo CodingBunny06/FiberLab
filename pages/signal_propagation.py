@@ -14,6 +14,4 @@ def render() -> None:
         ),
     )
 
-    render_workspace(
-        "Interactive signal propagation tools are coming soon."
-    )
+    render_workspace("Interactive signal propagation tools are coming soon.")

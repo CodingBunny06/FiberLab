@@ -1,4 +1,3 @@
-
 """Tests for Guardian report quality and diagnostics."""
 
 from guardian.error_detector import Diagnostic

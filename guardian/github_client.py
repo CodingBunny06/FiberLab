@@ -1,12 +1,14 @@
-
 """Read-only GitHub API client for FiberLab Guardian."""
 
 import json
 import os
 import re
+import ssl
 from dataclasses import dataclass
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
+
+import certifi
 
 
 @dataclass
@@ -80,8 +82,14 @@ class GitHubClient:
             method="GET",
         )
 
+        ssl_context = ssl.create_default_context(cafile=certifi.where())
+
         try:
-            with urlopen(request, timeout=self.timeout) as response:
+            with urlopen(
+                request,
+                timeout=self.timeout,
+                context=ssl_context,
+            ) as response:
                 return json.loads(response.read().decode("utf-8"))
 
         except HTTPError as error:
@@ -96,19 +104,13 @@ class GitHubClient:
                     "GitHub access was denied or rate-limited."
                 ) from error
 
-            raise GitHubAPIError(
-                f"GitHub API returned HTTP {error.code}."
-            ) from error
+            raise GitHubAPIError(f"GitHub API returned HTTP {error.code}.") from error
 
         except (URLError, TimeoutError, OSError) as error:
-            raise GitHubAPIError(
-                "Unable to connect to the GitHub API."
-            ) from error
+            raise GitHubAPIError("Unable to connect to the GitHub API.") from error
 
         except (json.JSONDecodeError, UnicodeDecodeError) as error:
-            raise GitHubAPIError(
-                "GitHub returned an invalid JSON response."
-            ) from error
+            raise GitHubAPIError("GitHub returned an invalid JSON response.") from error
 
     def get_pull_request(
         self,
@@ -120,9 +122,7 @@ class GitHubClient:
         self._validate_repository(repository)
         self._validate_pr_number(pr_number)
 
-        data = self._request(
-            f"/repos/{repository}/pulls/{pr_number}"
-        )
+        data = self._request(f"/repos/{repository}/pulls/{pr_number}")
 
         if not isinstance(data, dict):
             raise GitHubAPIError("Unexpected pull request response.")
@@ -139,9 +139,7 @@ class GitHubClient:
             head_branch=head["ref"],
             head_sha=head["sha"],
             head_repo=(
-                head_repo.get("full_name")
-                if isinstance(head_repo, dict)
-                else None
+                head_repo.get("full_name") if isinstance(head_repo, dict) else None
             ),
         )
 
@@ -160,8 +158,7 @@ class GitHubClient:
 
         while True:
             data = self._request(
-                f"/repos/{repository}/pulls/{pr_number}/files"
-                f"?per_page=100&page={page}"
+                f"/repos/{repository}/pulls/{pr_number}/files?per_page=100&page={page}"
             )
 
             if not isinstance(data, list):

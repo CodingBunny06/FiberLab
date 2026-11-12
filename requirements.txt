@@ -5,3 +5,4 @@ plotly
 matplotlib
 pytest
 ruff
+certifi

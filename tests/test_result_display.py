@@ -1,4 +1,3 @@
-
 """Tests for FiberLab result display components."""
 
 from unittest.mock import MagicMock
@@ -12,10 +11,7 @@ def test_render_result_metrics_displays_empty_message(monkeypatch):
 
     result_display.render_result_metrics({})
 
-    info_mock.assert_called_once_with(
-        "No simulation results available yet."
-    )
-
+    info_mock.assert_called_once_with("No simulation results available yet.")
 
 
 def test_render_result_metrics_displays_values(monkeypatch):

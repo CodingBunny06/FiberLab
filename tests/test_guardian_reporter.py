@@ -1,4 +1,3 @@
-
 """Tests for the FiberLab Guardian reporter."""
 
 from guardian.reporter import format_report, generate_report

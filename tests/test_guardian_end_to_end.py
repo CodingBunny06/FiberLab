@@ -1,6 +1,4 @@
-
 """End-to-end tests for the FiberLab Guardian pipeline."""
-
 
 from guardian.runner import run_guardian
 from guardian.test_runner import CommandResult
@@ -58,9 +56,7 @@ def test_guardian_stops_after_structural_failure(tmp_path, monkeypatch):
     physics_dir = candidate / "physics"
     physics_dir.mkdir()
 
-    (physics_dir / "numerical_aperture.py").write_text(
-        "def broken_function(\n"
-    )
+    (physics_dir / "numerical_aperture.py").write_text("def broken_function(\n")
 
     def unexpected_command(*args, **kwargs):
         raise AssertionError("Quality checks should not execute.")
@@ -117,6 +113,5 @@ def test_guardian_reports_quality_check_failure(tmp_path, monkeypatch):
     assert report.failed == 1
     assert report.overall_status == "FAIL"
     assert any(
-        "Ruff detected an issue." in item.recommendation
-        for item in report.diagnostics
+        "Ruff detected an issue." in item.recommendation for item in report.diagnostics
     )

@@ -1,4 +1,3 @@
-
 """Tests for FiberLab module integration contracts."""
 
 import ast
@@ -55,9 +54,7 @@ def test_visualization_package_exists():
 
 
 def test_integration_contract_document_exists():
-    assert (
-        PROJECT_ROOT / "docs" / "integration" / "MODULE_CONTRACTS.md"
-    ).exists()
+    assert (PROJECT_ROOT / "docs" / "integration" / "MODULE_CONTRACTS.md").exists()
 
 
 def test_physics_package_does_not_import_streamlit():
@@ -97,9 +94,7 @@ def test_application_integration_contract_exists():
 
 
 def test_visualization_package_does_not_import_streamlit():
-    visualization_files = list(
-        (PROJECT_ROOT / "visualization").glob("*.py")
-    )
+    visualization_files = list((PROJECT_ROOT / "visualization").glob("*.py"))
 
     for file_path in visualization_files:
         source = file_path.read_text(encoding="utf-8")
@@ -137,9 +132,7 @@ def test_implemented_module_api_signatures():
             )
 
             function = definitions[function_name]
-            actual_parameters = tuple(
-                argument.arg for argument in function.args.args
-            )
+            actual_parameters = tuple(argument.arg for argument in function.args.args)
 
             assert actual_parameters == expected_parameters, (
                 f"{function_name} in {relative_path} has incorrect "
@@ -150,9 +143,7 @@ def test_implemented_module_api_signatures():
             assert not function.args.posonlyargs, (
                 f"{function_name} must not use positional-only parameters."
             )
-            assert function.args.vararg is None, (
-                f"{function_name} must not use *args."
-            )
+            assert function.args.vararg is None, f"{function_name} must not use *args."
             assert function.args.kwarg is None, (
                 f"{function_name} must not use **kwargs."
             )
