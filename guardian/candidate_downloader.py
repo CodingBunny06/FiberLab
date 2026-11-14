@@ -11,7 +11,6 @@ from urllib.request import Request, urlopen
 
 import certifi
 
-
 MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024
 
 
