@@ -155,7 +155,6 @@ def test_rejects_absolute_file_path(tmp_path):
         )
 
 
-
 def test_rejects_symlink_destination(tmp_path):
     target = tmp_path / "outside"
     destination = tmp_path / "candidate"
