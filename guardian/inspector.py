@@ -204,7 +204,7 @@ def inspect_project(project_root: Path) -> list[InspectionFinding]:
 def inspect_internal_imports(project_root: Path) -> list[InspectionFinding]:
     """Detect broken internal module and symbol imports."""
     findings = []
-    project_packages = ("physics", "visualization", "components", "pages")
+    project_packages = ("physics", "visualization", "components", "pages", "guardian")
 
     for package in project_packages:
         package_path = project_root / package
@@ -315,7 +315,7 @@ def inspect_package_syntax(
     project_root: Path,
     existing_findings: list[InspectionFinding],
 ) -> list[InspectionFinding]:
-    """Detect syntax errors in all physics and visualization Python files."""
+    """Detect syntax errors across all application Python packages."""
     findings = []
 
     already_reported = {
@@ -324,7 +324,7 @@ def inspect_package_syntax(
         if finding.status == "FAIL" and "Unable to parse module" in finding.message
     }
 
-    for package in ("physics", "visualization"):
+    for package in ("physics", "visualization", "components", "pages", "guardian"):
         package_path = project_root / package
 
         if not package_path.exists():
