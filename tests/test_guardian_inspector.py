@@ -237,3 +237,21 @@ def calculate_numerical_aperture(n_core, n_cladding):
         and "belongs in physics/numerical_aperture.py" in finding.message
         for finding in findings
     )
+
+
+
+def test_syntax_error_in_guardian_module_is_detected(tmp_path):
+    create_module(
+        tmp_path,
+        "guardian/helpers.py",
+        "def inspect_candidate(:",
+    )
+
+    findings = inspect_project(tmp_path)
+
+    assert any(
+        finding.status == "FAIL"
+        and finding.file == "guardian/helpers.py"
+        and "Unable to parse module" in finding.message
+        for finding in findings
+    )
