@@ -7,8 +7,8 @@ pre-computed by the physics/simulation layer and passed via `ray_data`.
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
 import math
+from collections.abc import Mapping, Sequence
 from typing import Any
 
 import plotly.graph_objects as go
@@ -36,9 +36,7 @@ def _validate_ray_points(ray: Any, ray_key: str) -> tuple[list[float], list[floa
     """Validate and normalize a ray coordinate structure into (x_list, y_list)."""
     if isinstance(ray, Mapping):
         if "x" not in ray or "y" not in ray:
-            raise ValueError(
-                f"'{ray_key}' mapping must contain both 'x' and 'y' keys."
-            )
+            raise ValueError(f"'{ray_key}' mapping must contain both 'x' and 'y' keys.")
         raw_x = ray["x"]
         raw_y = ray["y"]
         if (
@@ -47,17 +45,11 @@ def _validate_ray_points(ray: Any, ray_key: str) -> tuple[list[float], list[floa
             or not isinstance(raw_y, Sequence)
             or isinstance(raw_y, (str, bytes))
         ):
-            raise ValueError(
-                f"'{ray_key}' x and y fields must be sequences of numbers."
-            )
+            raise TypeError(f"'{ray_key}' x and y fields must be sequences of numbers.")
         if len(raw_x) != len(raw_y):
-            raise ValueError(
-                f"'{ray_key}' x and y sequences must have equal length."
-            )
+            raise ValueError(f"'{ray_key}' x and y sequences must have equal length.")
         if len(raw_x) < 2:
-            raise ValueError(
-                f"'{ray_key}' must contain at least 2 coordinate points."
-            )
+            raise ValueError(f"'{ray_key}' must contain at least 2 coordinate points.")
         for coord in (*raw_x, *raw_y):
             if not _is_valid_number(coord):
                 raise ValueError(
@@ -67,9 +59,7 @@ def _validate_ray_points(ray: Any, ray_key: str) -> tuple[list[float], list[floa
 
     if isinstance(ray, Sequence) and not isinstance(ray, (str, bytes)):
         if len(ray) < 2:
-            raise ValueError(
-                f"'{ray_key}' must contain at least 2 coordinate points."
-            )
+            raise ValueError(f"'{ray_key}' must contain at least 2 coordinate points.")
         xs: list[float] = []
         ys: list[float] = []
         for pt in ray:
@@ -80,14 +70,12 @@ def _validate_ray_points(ray: Any, ray_key: str) -> tuple[list[float], list[floa
                 or not _is_valid_number(pt[0])
                 or not _is_valid_number(pt[1])
             ):
-                raise ValueError(
-                    f"'{ray_key}' points must be finite (x, y) pairs."
-                )
+                raise ValueError(f"'{ray_key}' points must be finite (x, y) pairs.")
             xs.append(float(pt[0]))
             ys.append(float(pt[1]))
         return xs, ys
 
-    raise ValueError(
+    raise TypeError(
         f"'{ray_key}' must be a dict with 'x' and 'y' sequences or a sequence of (x, y) pairs."
     )
 
@@ -107,12 +95,10 @@ def _validate_ray_data(ray_data: Mapping[str, Any]) -> None:
             raise ValueError(f"'{key}' must be a finite positive number.")
 
     if float(ray_data["cladding_radius"]) <= float(ray_data["core_radius"]):
-        raise ValueError(
-            "cladding_radius must be strictly greater than core_radius."
-        )
+        raise ValueError("cladding_radius must be strictly greater than core_radius.")
 
     if not isinstance(ray_data["is_tir"], bool):
-        raise ValueError("'is_tir' must be a boolean value.")
+        raise TypeError("'is_tir' must be a boolean value.")
 
     _validate_ray_points(ray_data["incident_ray"], "incident_ray")
     _validate_ray_points(ray_data["propagating_ray"], "propagating_ray")
@@ -130,10 +116,7 @@ def _validate_ray_data(ray_data: Mapping[str, Any]) -> None:
         for idx, r_ray in enumerate(refracted_rays):
             _validate_ray_points(r_ray, f"refracted_rays[{idx}]")
 
-    if (
-        "reflection_points" in ray_data
-        and ray_data["reflection_points"] is not None
-    ):
+    if "reflection_points" in ray_data and ray_data["reflection_points"] is not None:
         pts = ray_data["reflection_points"]
         if isinstance(pts, Mapping):
             if "x" not in pts or "y" not in pts or len(pts["x"]) != len(pts["y"]):
@@ -171,16 +154,17 @@ def _validate_ray_data(ray_data: Mapping[str, Any]) -> None:
         "acceptance_angle_deg",
         "critical_angle_deg",
     ):
-        if opt_key in ray_data and ray_data[opt_key] is not None:
-            if not _is_valid_number(ray_data[opt_key]):
-                raise ValueError(
-                    f"Optional metadata '{opt_key}' must be a finite real number."
-                )
+        if (
+            opt_key in ray_data
+            and ray_data[opt_key] is not None
+            and not _is_valid_number(ray_data[opt_key])
+        ):
+            raise ValueError(
+                f"Optional metadata '{opt_key}' must be a finite real number."
+            )
 
     n_core = ray_data.get("n_core", ray_data.get("core_refractive_index"))
-    n_clad = ray_data.get(
-        "n_cladding", ray_data.get("cladding_refractive_index")
-    )
+    n_clad = ray_data.get("n_cladding", ray_data.get("cladding_refractive_index"))
     if n_core is not None and float(n_core) <= 0:
         raise ValueError("Core refractive index must be positive.")
     if n_clad is not None and float(n_clad) <= 0:
@@ -413,25 +397,15 @@ def create_fiber_ray_figure(ray_data: Mapping[str, Any]) -> go.Figure:
         else "Regime: Refraction / Cladding Loss"
     ]
     n_core = ray_data.get("n_core", ray_data.get("core_refractive_index"))
-    n_clad = ray_data.get(
-        "n_cladding", ray_data.get("cladding_refractive_index")
-    )
+    n_clad = ray_data.get("n_cladding", ray_data.get("cladding_refractive_index"))
     if n_core is not None and n_clad is not None:
-        subtitle_parts.append(
-            f"n_core={float(n_core):.3f}, n_clad={float(n_clad):.3f}"
-        )
+        subtitle_parts.append(f"n_core={float(n_core):.3f}, n_clad={float(n_clad):.3f}")
     if ray_data.get("incident_angle_deg") is not None:
-        subtitle_parts.append(
-            f"θ_in={float(ray_data['incident_angle_deg']):.1f}°"
-        )
+        subtitle_parts.append(f"θ_in={float(ray_data['incident_angle_deg']):.1f}°")
     if ray_data.get("acceptance_angle_deg") is not None:
-        subtitle_parts.append(
-            f"θ_a={float(ray_data['acceptance_angle_deg']):.1f}°"
-        )
+        subtitle_parts.append(f"θ_a={float(ray_data['acceptance_angle_deg']):.1f}°")
     if ray_data.get("critical_angle_deg") is not None:
-        subtitle_parts.append(
-            f"θ_c={float(ray_data['critical_angle_deg']):.1f}°"
-        )
+        subtitle_parts.append(f"θ_c={float(ray_data['critical_angle_deg']):.1f}°")
 
     subtitle_text = " | ".join(subtitle_parts)
 
