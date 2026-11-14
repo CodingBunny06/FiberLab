@@ -1,5 +1,6 @@
 """Download selected GitHub pull request files into an isolated workspace."""
 
+import certifi
 import os
 import re
 import shutil
@@ -8,8 +9,6 @@ from pathlib import Path, PurePosixPath
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
-
-import certifi
 
 
 MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024
