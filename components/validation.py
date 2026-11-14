@@ -5,13 +5,23 @@ import math
 
 def validate_positive(value: float, name: str) -> None:
     """Ensure a value is finite and greater than zero."""
-    if not math.isfinite(value) or value <= 0:
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, (int, float))
+        or not math.isfinite(value)
+        or value <= 0
+    ):
         raise ValueError(f"{name} must be a finite positive number.")
 
 
 def validate_non_negative(value: float, name: str) -> None:
     """Ensure a value is finite and non-negative."""
-    if not math.isfinite(value) or value < 0:
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, (int, float))
+        or not math.isfinite(value)
+        or value < 0
+    ):
         raise ValueError(f"{name} must be a finite non-negative number.")
 
 
