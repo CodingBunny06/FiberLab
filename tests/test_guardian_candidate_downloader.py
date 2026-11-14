@@ -153,3 +153,47 @@ def test_rejects_absolute_file_path(tmp_path):
             ["/tmp/outside.py"],
             tmp_path / "candidate",
         )
+
+
+
+def test_rejects_symlink_destination(tmp_path):
+    target = tmp_path / "outside"
+    destination = tmp_path / "candidate"
+    target.mkdir()
+    destination.symlink_to(target, target_is_directory=True)
+
+    with pytest.raises(FileExistsError):
+        download_candidate_files(
+            REPOSITORY,
+            COMMIT_SHA,
+            ["physics/attenuation.py"],
+            destination,
+        )
+
+    assert list(target.iterdir()) == []
+
+
+def test_rejects_oversized_candidate_file(monkeypatch, tmp_path):
+    from guardian.candidate_downloader import MAX_FILE_SIZE_BYTES
+
+    content = b"x" * (MAX_FILE_SIZE_BYTES + 1)
+
+    def mock_urlopen(request, timeout, context):
+        return io.BytesIO(content)
+
+    monkeypatch.setattr(
+        "guardian.candidate_downloader.urlopen",
+        mock_urlopen,
+    )
+
+    destination = tmp_path / "candidate"
+
+    with pytest.raises(CandidateDownloadError, match="exceeds"):
+        download_candidate_files(
+            REPOSITORY,
+            COMMIT_SHA,
+            ["physics/attenuation.py"],
+            destination,
+        )
+
+    assert not destination.exists()
