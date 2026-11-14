@@ -171,8 +171,7 @@ File: `visualization/fiber_animation.py`
 Proposed function:
 
 ```python
-def create_fiber_ray_figure(ray_data):
-    ...
+def create_fiber_ray_figure(ray_data): ...
 ```
 
 ### 9.2 Attenuation Graph
@@ -182,11 +181,7 @@ File: `visualization/signal_graphs.py`
 Proposed function:
 
 ```python
-def create_attenuation_figure(
-    distance_km,
-    power_mw
-):
-    ...
+def create_attenuation_figure(distance_km, power_mw): ...
 ```
 
 ### 9.3 Signal Waveform Graph
@@ -196,12 +191,7 @@ File: `visualization/signal_graphs.py`
 Proposed function:
 
 ```python
-def create_signal_waveform_figure(
-    input_signal,
-    output_signal,
-    time_axis
-):
-    ...
+def create_signal_waveform_figure(input_signal, output_signal, time_axis): ...
 ```
 
 Output:
