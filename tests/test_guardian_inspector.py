@@ -239,7 +239,6 @@ def calculate_numerical_aperture(n_core, n_cladding):
     )
 
 
-
 def test_syntax_error_in_guardian_module_is_detected(tmp_path):
     create_module(
         tmp_path,
