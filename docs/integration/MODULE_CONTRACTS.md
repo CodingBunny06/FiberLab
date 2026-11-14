@@ -159,6 +159,7 @@ Output:
 These signatures define the proposed v1.0 interface. Implementation remains the responsibility of the physics module owner.
 
 
+
 ## 9. Visualization API — Function Specifications
 
 The visualization module converts simulation data into interactive visual outputs.
@@ -168,27 +169,32 @@ The visualization module converts simulation data into interactive visual output
 File: `visualization/fiber_animation.py`
 
 Proposed function:
+
 ```python
 def create_fiber_ray_figure(ray_data):
     ...
+```
 
 ### 9.2 Attenuation Graph
 
 File: `visualization/signal_graphs.py`
 
 Proposed function:
+
 ```python
 def create_attenuation_figure(
     distance_km,
     power_mw
 ):
     ...
+```
 
 ### 9.3 Signal Waveform Graph
 
 File: `visualization/signal_graphs.py`
 
 Proposed function:
+
 ```python
 def create_signal_waveform_figure(
     input_signal,
@@ -202,10 +208,8 @@ Output:
 - Plotly Figure comparing input and output waveforms.
 
 Additional requirements:
-- Input waveform, output waveform, and time-axis arrays
-  must have compatible lengths.
-- The exact data types and units must be agreed upon
-  before implementation.
+- Input waveform, output waveform, and time-axis arrays must have compatible lengths.
+- The exact data types and units must be agreed upon before implementation.
 
 ### 9.4 General Requirements
 
@@ -218,6 +222,7 @@ Additional requirements:
 - Include tests for figure creation and output structure.
 
 These signatures are proposed v1.0 interfaces. The visualization module owner must review and agree to them before implementation.
+
 
 
 ## 10. Application Integration API
