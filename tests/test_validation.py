@@ -46,7 +46,6 @@ def test_validate_refractive_indices_rejects_invalid_order():
         validate_refractive_indices(1.4, 1.5)
 
 
-
 @pytest.mark.parametrize("value", ["1.5", None, True, object()])
 def test_validate_positive_rejects_non_numeric_values(value):
     with pytest.raises(ValueError):
