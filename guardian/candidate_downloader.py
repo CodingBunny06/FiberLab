@@ -12,6 +12,9 @@ from urllib.request import Request, urlopen
 import certifi
 
 
+MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024
+
+
 class CandidateDownloadError(Exception):
     """Raised when a candidate file cannot be downloaded."""
 
@@ -75,10 +78,12 @@ def download_candidate_files(
     if len(set(validated_paths)) != len(validated_paths):
         raise ValueError("Duplicate candidate file paths are not allowed.")
 
-    destination = Path(destination).resolve()
+    original_destination = Path(destination)
 
-    if destination.exists():
-        raise FileExistsError("Candidate destination already exists.")
+    if original_destination.is_symlink() or original_destination.exists():
+        raise FileExistsError("Candidate destination already exists or is a symlink.")
+
+    destination = original_destination.resolve()
 
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.mkdir()
@@ -111,7 +116,12 @@ def download_candidate_files(
                     timeout=timeout,
                     context=ssl_context,
                 ) as response:
-                    content = response.read()
+                    content = response.read(MAX_FILE_SIZE_BYTES + 1)
+                    if len(content) > MAX_FILE_SIZE_BYTES:
+                        raise CandidateDownloadError(
+                            f"Candidate file {relative_path} exceeds the "
+                            f"{MAX_FILE_SIZE_BYTES}-byte download limit."
+                        )
 
             except HTTPError as error:
                 raise CandidateDownloadError(
