@@ -1,6 +1,8 @@
 numpy
 scipy
-streamlit
+streamlit==1.67.0
 plotly
 matplotlib
 pytest
+ruff
+certifi
