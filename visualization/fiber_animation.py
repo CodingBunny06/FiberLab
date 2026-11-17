@@ -112,7 +112,7 @@ def _validate_ray_data(ray_data: Mapping[str, Any]) -> None:
         if not isinstance(refracted_rays, Sequence) or isinstance(
             refracted_rays, (str, bytes)
         ):
-            raise ValueError("'refracted_rays' must be a sequence of ray paths.")
+            raise TypeError("'refracted_rays' must be a sequence of ray paths.")
         for idx, r_ray in enumerate(refracted_rays):
             _validate_ray_points(r_ray, f"refracted_rays[{idx}]")
 
@@ -140,7 +140,7 @@ def _validate_ray_data(ray_data: Mapping[str, Any]) -> None:
                         "'reflection_points' must contain finite (x, y) pairs."
                     )
         else:
-            raise ValueError(
+            raise TypeError(
                 "'reflection_points' must be a coordinate mapping or sequence of (x, y) pairs."
             )
 
