@@ -18,15 +18,15 @@ def test_page_modules_import_cleanly():
         assert hasattr(module, "render")
 
 
-def test_navigation_definitions_cover_all_pages():
+def test_navigation_definitions_cover_public_pages_only():
     assert [definition["title"] for definition in app.PAGE_DEFINITIONS] == [
         "FiberLab",
         "Fiber Explorer",
         "De Broglie Matter Waves",
         "Attenuation Laboratory",
         "Signal Propagation",
-        "Guardian",
     ]
+    assert all(definition["title"] != "Guardian" for definition in app.PAGE_DEFINITIONS)
     assert (
         sum(definition.get("default", False) for definition in app.PAGE_DEFINITIONS)
         == 1
@@ -67,7 +67,6 @@ def test_main_uses_native_sidebar_navigation(monkeypatch):
         "De Broglie Matter Waves",
         "Attenuation Laboratory",
         "Signal Propagation",
-        "Guardian",
     ]
     assert calls["ran"] is True
 

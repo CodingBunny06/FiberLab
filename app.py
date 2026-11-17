@@ -7,7 +7,6 @@ import streamlit as st
 from pages.attenuation_laboratory import render as render_attenuation_laboratory
 from pages.de_broglie import render as render_de_broglie
 from pages.fiber_explorer import render as render_fiber_explorer
-from pages.guardian_dashboard import render as render_guardian
 from pages.home import render as render_home
 from pages.signal_propagation import render as render_signal_propagation
 
@@ -43,17 +42,11 @@ PAGE_DEFINITIONS = (
         "icon": ":material/waves:",
         "url_path": "signal-propagation",
     },
-    {
-        "render": render_guardian,
-        "title": "Guardian",
-        "icon": ":material/shield:",
-        "url_path": "guardian",
-    },
 )
 
 
 def build_navigation():
-    """Build native Streamlit navigation entries."""
+    """Build native Streamlit navigation entries for public laboratory pages."""
     return st.navigation(
         [
             st.Page(
@@ -70,7 +63,7 @@ def build_navigation():
 
 
 def main() -> None:
-    """Configure and render the application."""
+    """Configure and render the public application."""
     st.set_page_config(page_title="FiberLab", page_icon="🔬", layout="wide")
     build_navigation().run()
 
