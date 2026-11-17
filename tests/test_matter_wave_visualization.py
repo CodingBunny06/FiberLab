@@ -1,18 +1,13 @@
+import itertools
 import math
 
 import pytest
 
-from visualization.matter_wave import (
-    MAX_RENDERED_CYCLES,
-    create_matter_wave_figure,
-)
+from visualization.matter_wave import create_matter_wave_figure
 
 
 def _zero_crossings(values):
-    return sum(
-        first * second < 0
-        for first, second in zip(values, values[1:])
-    )
+    return sum(first * second < 0 for first, second in itertools.pairwise(values))
 
 
 def test_matter_wave_uses_fixed_physical_distance():
