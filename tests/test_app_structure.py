@@ -11,6 +11,7 @@ def test_page_modules_import_cleanly():
     for module_name in (
         "pages.home",
         "pages.fiber_explorer",
+        "pages.de_broglie",
         "pages.attenuation_laboratory",
         "pages.signal_propagation",
     ):
@@ -22,6 +23,7 @@ def test_navigation_definitions_cover_all_pages():
     assert [definition["title"] for definition in app.PAGE_DEFINITIONS] == [
         "FiberLab",
         "Fiber Explorer",
+        "De Broglie Matter Waves",
         "Attenuation Laboratory",
         "Signal Propagation",
         "Guardian",
@@ -63,6 +65,7 @@ def test_main_uses_native_sidebar_navigation(monkeypatch):
     assert [page["title"] for page in calls["pages"]] == [
         "FiberLab",
         "Fiber Explorer",
+        "De Broglie Matter Waves",
         "Attenuation Laboratory",
         "Signal Propagation",
         "Guardian",
@@ -80,33 +83,8 @@ def test_landing_page_renders():
     )
 
 
-@pytest.mark.parametrize(
-    ("module_name", "title"),
-    (
-        ("pages.fiber_explorer", "Fiber Explorer"),
-        ("pages.attenuation_laboratory", "Attenuation Laboratory"),
-        ("pages.signal_propagation", "Signal Propagation"),
-    ),
-)
-def test_simulator_pages_render_placeholders(monkeypatch, module_name, title):
-    module = importlib.import_module(module_name)
-    rendered = {}
-
-    import streamlit as st
-
-    monkeypatch.setattr(st, "title", lambda value: rendered.setdefault("title", value))
-    monkeypatch.setattr(
-        st, "caption", lambda value: rendered.setdefault("caption", value)
-    )
-    monkeypatch.setattr(st, "write", lambda value: rendered.setdefault("body", value))
-    monkeypatch.setattr(st, "divider", lambda: None)
-    monkeypatch.setattr(
-        st, "subheader", lambda value: rendered.setdefault("subheader", value)
-    )
-    monkeypatch.setattr(st, "info", lambda value: rendered.setdefault("info", value))
-
-    module.render()
-
-    assert rendered["title"] == title
-    assert rendered["subheader"] == "Laboratory workspace"
-    assert "coming soon" in rendered["info"]
+def test_simulator_pages_no_longer_render_placeholder_messages():
+    root = Path(__file__).parents[1]
+    for filename in ("fiber_explorer.py", "de_broglie.py", "attenuation_laboratory.py", "signal_propagation.py"):
+        source = (root / "pages" / filename).read_text(encoding="utf-8")
+        assert "coming soon" not in source.lower()
