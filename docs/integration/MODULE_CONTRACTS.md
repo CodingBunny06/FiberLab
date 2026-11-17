@@ -39,5 +39,9 @@ The matter-wave page labels the sinusoid as an illustrative spatial periodicity,
 - `create_attenuation_figure(distance_km, power_mw) -> Figure`
 - `create_signal_waveform_figure(input_signal, output_signal, time_axis) -> Figure`
 
+## Error Handling
+
+Invalid inputs are rejected by the physics layer and rendered as readable Streamlit errors at the page boundary. No physics module imports Streamlit.
+
 ## Validation
 Physics functions reject invalid physical ranges and non-finite values. UI pages should show user-readable errors rather than allowing invalid inputs to crash the application. Tests cover calculation references, boundaries, invalid inputs, module signatures, visualization output, and navigation.
