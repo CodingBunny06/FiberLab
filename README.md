@@ -2,17 +2,25 @@
 
 **Interactive Physics & Optical Fiber Simulation Laboratory**
 
-FiberLab is a Streamlit-based educational application that turns physics concepts into interactive calculations and visual experiments. The application contains an optical-fiber laboratory and a separate De Broglie matter-wave experiment.
+[![CI](https://github.com/CodingBunny06/FiberLab/actions/workflows/ci.yml/badge.svg)](https://github.com/CodingBunny06/FiberLab/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.67.0-red.svg)](https://streamlit.io/)
+
+FiberLab is a Streamlit-based educational application that turns physics concepts into interactive calculations and visual experiments. It brings together an optical-fiber laboratory and a separate De Broglie matter-wave experiment.
+
+## Live application
+
+**[Open FiberLab](https://fiberlab-xjlvqbfj8kskptzbwddwwc.streamlit.app/)**
 
 ## Modules
 
-| Module | Working features |
+| Module | What you can explore |
 |---|---|
-| Fiber Explorer | Step-index fiber parameters, numerical aperture, acceptance angle, critical angle, guided/escaping ray visualization |
-| De Broglie Matter Waves | Matter-wave wavelength calculator, particle presets, physical-distance wave visualization, particle wavelength comparison, wavelength-versus-velocity graph |
-| Attenuation Laboratory | Output power and total-loss calculations, power-versus-distance graph |
+| Fiber Explorer | Step-index fiber parameters, numerical aperture, acceptance angle, critical angle, and guided/escaping ray visualization |
+| De Broglie Matter Waves | Matter-wave wavelength calculator, particle presets, physical-distance wave visualization, particle wavelength comparison, and wavelength-versus-velocity graph |
+| Attenuation Laboratory | Output power and total-loss calculations, with a power-versus-distance graph |
 | Signal Propagation | Gaussian pulse input/output comparison using a second-order dispersion model |
-| Guardian | Existing repository inspection and integration support dashboard |
+| Guardian | Repository inspection and integration-support dashboard |
 
 ## Run locally
 
@@ -69,14 +77,20 @@ The signal page uses an educational Gaussian pulse broadening relation with seco
 - `physics/` — pure calculation and simulation models
 - `visualization/` — Plotly figures, independent of Streamlit
 - `components/` — reusable UI components
-- `guardian/` — existing Guardian tools
+- `guardian/` — Guardian inspection and integration tools
 - `tests/` — unit, contract and application tests
 - `docs/` — integration and developer documentation
+
+## Security note
+
+Guardian includes GitHub pull-request inspection and an optional action that can publish a report as a PR comment. Do not expose a GitHub token through a public deployment's shared secrets. PR inspection should remain static for untrusted contributions; do not execute untrusted PR code.
+
+See [SECURITY.md](SECURITY.md) for Guardian's security model and known limitations.
+
+## Project status
+
+FiberLab is deployed on Streamlit Community Cloud. The merged `main` branch has passed the project's automated CI checks, and the application has been launched successfully from the local repository.
 
 ## Academic presentation note
 
 For the professor's requested demonstration, focus on **De Broglie Matter Waves**. The optical-fiber experiments remain separate modules within the same FiberLab application and need not be included in that focused presentation or report.
-
-## Status
-
-Feature-complete implementation is under integration review. Do not describe a release as verified until CI and a local application walkthrough pass.
