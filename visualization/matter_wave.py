@@ -23,7 +23,9 @@ def create_matter_wave_figure(
         or float(value) <= 0
         for value in values
     ):
-        raise ValueError("Wavelength, plot window and amplitude must be positive and finite.")
+        raise ValueError(
+            "Wavelength, plot window and amplitude must be positive and finite."
+        )
 
     window_m = float(plot_window_nm) * 1e-9
     cycles = window_m / float(wavelength_m)
