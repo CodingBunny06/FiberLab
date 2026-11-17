@@ -62,7 +62,7 @@ def render() -> None:
             min_value=0.001,
             max_value=1000.0,
             value=1.0,
-            step=0.1,
+            step=0.01,
             format="%.3f",
             help=(
                 "The horizontal axis is a real distance, not a wavelength-normalized "
