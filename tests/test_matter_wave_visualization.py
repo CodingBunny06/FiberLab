@@ -8,6 +8,13 @@ from visualization.matter_wave import (
 )
 
 
+def _zero_crossings(values):
+    return sum(
+        first * second < 0
+        for first, second in zip(values, values[1:])
+    )
+
+
 def test_matter_wave_uses_fixed_physical_distance():
     figure = create_matter_wave_figure(1e-9, 5.0, 0.75)
 
@@ -20,7 +27,9 @@ def test_shorter_wavelength_produces_more_cycles_in_same_window():
     electron_like = create_matter_wave_figure(1e-9, 5.0, 0.75)
     proton_like = create_matter_wave_figure(0.5e-9, 5.0, 0.75)
 
-    assert len(proton_like.data[0].x) > len(electron_like.data[0].x)
+    assert _zero_crossings(proton_like.data[0].y) > _zero_crossings(
+        electron_like.data[0].y
+    )
 
 
 def test_matter_wave_rejects_unrenderable_cycle_count():
