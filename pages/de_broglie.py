@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import math
-
 import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
@@ -13,12 +11,19 @@ from physics.de_broglie import (
     de_broglie_wavelength,
     momentum,
 )
+from visualization.matter_wave import (
+    MAX_RENDERED_CYCLES,
+    create_matter_wave_figure,
+)
 
 PARTICLES = {
     "Electron": 9.1093837e-31,
     "Proton": 1.6726219e-27,
     "Neutron": 1.6749275e-27,
     "Custom particle": 1.0e-30,
+}
+COMPARISON_PARTICLES = {
+    name: mass for name, mass in PARTICLES.items() if name != "Custom particle"
 }
 
 
@@ -28,7 +33,8 @@ def render() -> None:
         "Aim: Visualize the wave nature of matter and explore the De Broglie hypothesis."
     )
     st.markdown(
-        "Every moving particle has an associated wavelength, given by **λ = h / p = h / (mv)** for non-relativistic speeds."
+        "Every moving particle has an associated wavelength, given by "
+        "**λ = h / p = h / (mv)** for non-relativistic speeds."
     )
     left, right = st.columns(2)
     with left:
@@ -51,41 +57,86 @@ def render() -> None:
             format="%.3e",
         )
         amplitude = st.slider("Wave amplitude (visual scale)", 0.2, 1.0, 0.75, 0.05)
+        plot_window_nm = st.number_input(
+            "Physical plot window (nm)",
+            min_value=0.001,
+            max_value=1000.0,
+            value=1.0,
+            step=0.1,
+            format="%.3f",
+            help=(
+                "The horizontal axis is a real distance, not a wavelength-normalized "
+                "axis. Reduce this window to resolve very short wavelengths."
+            ),
+        )
+
     wavelength = de_broglie_wavelength(mass, velocity)
-    p = momentum(mass, velocity)
+    particle_momentum = momentum(mass, velocity)
     with right:
         st.metric("De Broglie wavelength", f"{wavelength:.4e} m")
-        st.metric("Momentum", f"{p:.4e} kg·m/s")
+        st.metric("Momentum", f"{particle_momentum:.4e} kg·m/s")
         st.metric("Velocity / speed of light", f"{velocity / SPEED_OF_LIGHT:.3%}")
         if velocity > 0.1 * SPEED_OF_LIGHT:
             st.warning(
                 "The non-relativistic approximation becomes less accurate above 0.1c."
             )
+
     st.divider()
     st.subheader("Matter-wave visualization")
-    # Display a normalized illustrative wave over four wavelengths; x-axis is scaled in units of λ.
-    x = np.linspace(0, 4 * wavelength, 800)
-    psi = amplitude * np.cos(2 * math.pi * x / wavelength)
-    fig = go.Figure(
-        go.Scatter(x=x / wavelength, y=psi, mode="lines", name="Matter wave")
-    )
-    fig.update_layout(
-        title="Illustrative De Broglie Wave",
-        xaxis_title="Position (wavelengths, x/λ)",
-        yaxis_title="Relative wave amplitude",
-        template="plotly_white",
-    )
-    st.plotly_chart(fig, use_container_width=True)
+    cycles_in_window = plot_window_nm * 1e-9 / wavelength
     st.caption(
-        "The plotted sinusoid illustrates periodicity; it is not a literal trajectory of the particle."
+        f"Physical distance shown: {plot_window_nm:g} nm · "
+        f"Expected wave cycles: {cycles_in_window:,.2f}"
     )
-    st.subheader("How momentum changes wavelength")
-    velocities = np.geomspace(max(velocity / 100, 1), min(velocity * 100, 2.9e8), 120)
-    wavelengths = [de_broglie_wavelength(mass, float(v)) for v in velocities]
+    if cycles_in_window > MAX_RENDERED_CYCLES:
+        st.warning(
+            f"This window contains more than {MAX_RENDERED_CYCLES:,} cycles, "
+            "which is too dense to render accurately. Reduce the physical plot "
+            "window or particle velocity."
+        )
+    else:
+        wave_figure = create_matter_wave_figure(
+            wavelength, plot_window_nm, amplitude
+        )
+        st.plotly_chart(wave_figure, use_container_width=True)
+    st.caption(
+        "The sinusoid illustrates spatial periodicity; it is not a particle "
+        "trajectory or a complete quantum wavefunction."
+    )
+
+    st.subheader("Wavelength comparison at the selected velocity")
+    comparison_names = list(COMPARISON_PARTICLES)
+    comparison_wavelengths_nm = [
+        de_broglie_wavelength(COMPARISON_PARTICLES[name], velocity) * 1e9
+        for name in comparison_names
+    ]
     comparison = go.Figure(
-        go.Scatter(x=velocities, y=wavelengths, mode="lines", name="λ(v)")
+        go.Bar(
+            x=comparison_names,
+            y=comparison_wavelengths_nm,
+            text=[f"{value:.3e} nm" for value in comparison_wavelengths_nm],
+            textposition="outside",
+            name="Wavelength",
+        )
     )
     comparison.update_layout(
+        title=f"Electron, proton and neutron at {velocity:.3e} m/s",
+        xaxis_title="Particle",
+        yaxis_title="De Broglie wavelength (nm, logarithmic scale)",
+        yaxis_type="log",
+        template="plotly_white",
+    )
+    st.plotly_chart(comparison, use_container_width=True)
+
+    st.subheader("How momentum changes wavelength")
+    velocities = np.geomspace(
+        max(velocity / 100, 1), min(velocity * 100, 2.9e8), 120
+    )
+    wavelengths = [de_broglie_wavelength(mass, float(v)) for v in velocities]
+    velocity_figure = go.Figure(
+        go.Scatter(x=velocities, y=wavelengths, mode="lines", name="λ(v)")
+    )
+    velocity_figure.update_layout(
         xaxis_title="Velocity (m/s)",
         yaxis_title="Wavelength (m)",
         yaxis_type="log",
@@ -93,7 +144,9 @@ def render() -> None:
         template="plotly_white",
         title="Wavelength decreases as momentum increases",
     )
-    st.plotly_chart(comparison, use_container_width=True)
+    st.plotly_chart(velocity_figure, use_container_width=True)
     st.info(
-        "For a fixed particle mass, increasing velocity increases momentum and decreases the De Broglie wavelength."
+        "At fixed particle mass, increasing velocity increases momentum and "
+        "decreases the De Broglie wavelength. At the same velocity, heavier "
+        "particles have shorter wavelengths."
     )
