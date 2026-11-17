@@ -95,9 +95,7 @@ def render() -> None:
             "window or particle velocity."
         )
     else:
-        wave_figure = create_matter_wave_figure(
-            wavelength, plot_window_nm, amplitude
-        )
+        wave_figure = create_matter_wave_figure(wavelength, plot_window_nm, amplitude)
         st.plotly_chart(wave_figure, use_container_width=True)
     st.caption(
         "The sinusoid illustrates spatial periodicity; it is not a particle "
@@ -129,9 +127,7 @@ def render() -> None:
     st.plotly_chart(comparison, use_container_width=True)
 
     st.subheader("How momentum changes wavelength")
-    velocities = np.geomspace(
-        max(velocity / 100, 1), min(velocity * 100, 2.9e8), 120
-    )
+    velocities = np.geomspace(max(velocity / 100, 1), min(velocity * 100, 2.9e8), 120)
     wavelengths = [de_broglie_wavelength(mass, float(v)) for v in velocities]
     velocity_figure = go.Figure(
         go.Scatter(x=velocities, y=wavelengths, mode="lines", name="λ(v)")
