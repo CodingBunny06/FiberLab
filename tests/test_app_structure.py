@@ -1,7 +1,6 @@
 import importlib
 from pathlib import Path
 
-import pytest
 from streamlit.testing.v1 import AppTest
 
 import app
