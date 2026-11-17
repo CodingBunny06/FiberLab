@@ -7,7 +7,11 @@ import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
 
-from physics.de_broglie import SPEED_OF_LIGHT, de_broglie_wavelength, momentum
+from physics.de_broglie import (
+    SPEED_OF_LIGHT,
+    de_broglie_wavelength,
+    momentum,
+)
 
 
 PARTICLES = {
