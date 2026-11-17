@@ -1,4 +1,5 @@
 """Step-index fiber ray-path simulation helpers."""
+
 from __future__ import annotations
 
 import math
@@ -11,9 +12,13 @@ from physics.numerical_aperture import (
 
 
 def simulate_fiber_ray(
-    n_core: float, n_cladding: float, core_radius_um: float = 25.0,
-    cladding_radius_um: float = 62.5, length_um: float = 500.0,
-    launch_angle_deg: float = 8.0, samples: int = 400,
+    n_core: float,
+    n_cladding: float,
+    core_radius_um: float = 25.0,
+    cladding_radius_um: float = 62.5,
+    length_um: float = 500.0,
+    launch_angle_deg: float = 8.0,
+    samples: int = 400,
 ) -> dict:
     """Generate a meridional ray path and metadata for the ray visualizer.
 

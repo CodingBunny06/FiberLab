@@ -13,10 +13,23 @@ MODULE_CONTRACTS = {
         "wavelength_from_momentum": ("momentum_kg_m_s",),
     },
     "physics/fiber_geometry.py": {
-        "simulate_fiber_ray": ("n_core", "n_cladding", "core_radius_um", "cladding_radius_um", "length_um", "launch_angle_deg", "samples"),
+        "simulate_fiber_ray": (
+            "n_core",
+            "n_cladding",
+            "core_radius_um",
+            "cladding_radius_um",
+            "length_um",
+            "launch_angle_deg",
+            "samples",
+        ),
     },
     "physics/signal_propagation.py": {
-        "broaden_gaussian_pulse": ("time_s", "pulse_width_s", "beta2_s2_per_km", "length_km"),
+        "broaden_gaussian_pulse": (
+            "time_s",
+            "pulse_width_s",
+            "beta2_s2_per_km",
+            "length_km",
+        ),
     },
     "physics/numerical_aperture.py": {
         "calculate_numerical_aperture": (

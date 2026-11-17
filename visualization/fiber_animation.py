@@ -154,7 +154,11 @@ def _validate_ray_data(ray_data: Mapping[str, Any]) -> None:
         "acceptance_angle_deg",
         "critical_angle_deg",
     ):
-        if opt_key in ray_data and ray_data[opt_key] is not None and not _is_valid_number(ray_data[opt_key]):
+        if (
+            opt_key in ray_data
+            and ray_data[opt_key] is not None
+            and not _is_valid_number(ray_data[opt_key])
+        ):
             raise ValueError(
                 f"Optional metadata '{opt_key}' must be a finite real number."
             )

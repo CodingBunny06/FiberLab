@@ -84,6 +84,11 @@ def test_landing_page_renders():
 
 def test_simulator_pages_no_longer_render_placeholder_messages():
     root = Path(__file__).parents[1]
-    for filename in ("fiber_explorer.py", "de_broglie.py", "attenuation_laboratory.py", "signal_propagation.py"):
+    for filename in (
+        "fiber_explorer.py",
+        "de_broglie.py",
+        "attenuation_laboratory.py",
+        "signal_propagation.py",
+    ):
         source = (root / "pages" / filename).read_text(encoding="utf-8")
         assert "coming soon" not in source.lower()

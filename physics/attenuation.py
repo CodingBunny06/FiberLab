@@ -1,4 +1,5 @@
 """Optical power attenuation calculations."""
+
 from __future__ import annotations
 
 import math
@@ -21,7 +22,9 @@ def calculate_total_loss(attenuation_db_per_km: float, length_km: float) -> floa
     return alpha * length
 
 
-def calculate_output_power(input_power_mw: float, attenuation_db_per_km: float, length_km: float) -> float:
+def calculate_output_power(
+    input_power_mw: float, attenuation_db_per_km: float, length_km: float
+) -> float:
     """Return output power in mW using Pout = Pin * 10^(-loss/10)."""
     power = _valid(input_power_mw, "input_power_mw")
     loss = calculate_total_loss(attenuation_db_per_km, length_km)

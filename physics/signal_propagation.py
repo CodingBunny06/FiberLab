@@ -1,4 +1,5 @@
 """Gaussian pulse propagation with second-order dispersion."""
+
 from __future__ import annotations
 
 import math
@@ -21,7 +22,5 @@ def broaden_gaussian_pulse(
     sigma_out = pulse_width_s * math.sqrt(
         1 + (beta2_s2_per_km * length_km / (pulse_width_s**2)) ** 2
     )
-    amplitude = [
-        math.exp(-(t * t) / (2 * sigma_out * sigma_out)) for t in time_s
-    ]
+    amplitude = [math.exp(-(t * t) / (2 * sigma_out * sigma_out)) for t in time_s]
     return time_s, amplitude, sigma_out

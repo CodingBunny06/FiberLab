@@ -3,6 +3,7 @@
 The default model is non-relativistic: lambda = h / (m v). The caller is
 responsible for presenting the approximation's validity to the user.
 """
+
 from __future__ import annotations
 
 import math
