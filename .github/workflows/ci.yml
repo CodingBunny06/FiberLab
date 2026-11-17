@@ -62,3 +62,29 @@ jobs:
 
       - name: Run test suite
         run: python -m pytest -v
+
+  package:
+    name: Build downloadable ZIP
+    runs-on: ubuntu-latest
+    needs:
+      - code-quality
+      - automated-tests
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create source package
+        run: |
+          mkdir -p dist
+          zip -r "dist/FiberLab-${GITHUB_SHA::7}.zip" . \
+            -x ".git/*" ".venv/*" "venv/*" "__pycache__/*" \
+               ".pytest_cache/*" ".ruff_cache/*" "dist/*" "*.pyc"
+
+      - name: Upload ZIP package
+        uses: actions/upload-artifact@v4
+        with:
+          name: FiberLab-${{ github.sha }}
+          path: dist/FiberLab-*.zip
+          if-no-files-found: error
+          retention-days: 30

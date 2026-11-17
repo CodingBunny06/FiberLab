@@ -7,6 +7,30 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 # Expected public APIs and their parameter names, in order.
 MODULE_CONTRACTS = {
+    "physics/de_broglie.py": {
+        "de_broglie_wavelength": ("mass_kg", "velocity_m_s"),
+        "momentum": ("mass_kg", "velocity_m_s"),
+        "wavelength_from_momentum": ("momentum_kg_m_s",),
+    },
+    "physics/fiber_geometry.py": {
+        "simulate_fiber_ray": (
+            "n_core",
+            "n_cladding",
+            "core_radius_um",
+            "cladding_radius_um",
+            "length_um",
+            "launch_angle_deg",
+            "samples",
+        ),
+    },
+    "physics/signal_propagation.py": {
+        "broaden_gaussian_pulse": (
+            "time_s",
+            "pulse_width_s",
+            "beta2_s2_per_km",
+            "length_km",
+        ),
+    },
     "physics/numerical_aperture.py": {
         "calculate_numerical_aperture": (
             "n_core",
