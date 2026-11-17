@@ -28,8 +28,10 @@ def render() -> None:
     output = calculate_output_power(input_power, alpha, length)
     loss = calculate_total_loss(alpha, length)
     x = np.linspace(0, length, 150)
-    powers = [
-        calculate_output_power(input_power, alpha, float(distance)) for distance in x
+    # At zero distance, no attenuation has occurred; preserve the input power.
+    powers = [input_power] + [
+        calculate_output_power(input_power, alpha, float(distance))
+        for distance in x[1:]
     ]
     m1, m2, m3 = st.columns(3)
     m1.metric("Output power", f"{output:.4f} mW")
