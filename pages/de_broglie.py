@@ -13,7 +13,6 @@ from physics.de_broglie import (
     momentum,
 )
 
-
 PARTICLES = {
     "Electron": 9.1093837e-31,
     "Proton": 1.6726219e-27,
