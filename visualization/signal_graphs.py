@@ -13,12 +13,12 @@ def create_attenuation_figure(distance_km: list[float], power_mw: list[float]) -
     return fig
 
 
-def create_signal_waveform_figure(time_s: list[float], input_signal: list[float], output_signal: list[float]) -> go.Figure:
+def create_signal_waveform_figure(input_signal: list[float], output_signal: list[float], time_axis: list[float]) -> go.Figure:
     """Compare input and broadened output pulse waveforms."""
-    if not (len(time_s) == len(input_signal) == len(output_signal)) or len(time_s) < 2:
+    if not (len(time_axis) == len(input_signal) == len(output_signal)) or len(time_axis) < 2:
         raise ValueError("Time and waveform arrays must have equal lengths of at least two.")
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=time_s, y=input_signal, mode="lines", name="Input pulse"))
-    fig.add_trace(go.Scatter(x=time_s, y=output_signal, mode="lines", name="Output pulse"))
+    fig.add_trace(go.Scatter(x=time_axis, y=input_signal, mode="lines", name="Input pulse"))
+    fig.add_trace(go.Scatter(x=time_axis, y=output_signal, mode="lines", name="Output pulse"))
     fig.update_layout(title="Signal Propagation and Pulse Broadening", xaxis_title="Time (s)", yaxis_title="Normalized amplitude", template="plotly_white")
     return fig
