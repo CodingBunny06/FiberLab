@@ -1,5 +1,9 @@
 # FiberLab module contracts — implemented interfaces
 
+## Application Integration API
+
+The Streamlit pages coordinate user inputs, physics calculations, and Plotly figures. The application router is defined in `app.py`.
+
 ## Separation of concerns
 - `physics/` contains numerical calculations and simulation models. It must not import Streamlit or Plotly.
 - `visualization/` receives prepared numerical data and returns Plotly figures. It must not depend on Streamlit.
