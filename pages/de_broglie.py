@@ -7,7 +7,7 @@ import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
 
-from physics.de_broglie import (
+from physics.de_broglie import (  # noqa: I001
     SPEED_OF_LIGHT,
     de_broglie_wavelength,
     momentum,
