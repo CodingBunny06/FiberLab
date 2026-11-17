@@ -34,9 +34,7 @@ def create_matter_wave_figure(
             f"Plot window contains more than {MAX_RENDERED_CYCLES} wave cycles."
         )
 
-    sample_count = max(
-        MINIMUM_SAMPLE_COUNT, math.ceil(cycles * POINTS_PER_CYCLE) + 1
-    )
+    sample_count = max(MINIMUM_SAMPLE_COUNT, math.ceil(cycles * POINTS_PER_CYCLE) + 1)
     x_nm = [
         index * float(plot_window_nm) / (sample_count - 1)
         for index in range(sample_count)
@@ -46,9 +44,7 @@ def create_matter_wave_figure(
         * math.cos(2 * math.pi * (position_nm * 1e-9) / float(wavelength_m))
         for position_nm in x_nm
     ]
-    figure = go.Figure(
-        go.Scatter(x=x_nm, y=wave, mode="lines", name="Matter wave")
-    )
+    figure = go.Figure(go.Scatter(x=x_nm, y=wave, mode="lines", name="Matter wave"))
     figure.update_layout(
         title="Illustrative De Broglie Wave",
         xaxis_title="Physical position (nm)",
