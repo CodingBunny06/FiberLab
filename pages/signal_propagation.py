@@ -26,7 +26,7 @@ def render() -> None:
     _, output_signal, output_width = broaden_gaussian_pulse(time_s, width_s, beta2_si, length)
     st.metric("Output RMS pulse width", f"{output_width * 1e12:.3f} ps")
     st.plotly_chart(
-        create_signal_waveform_figure(time_ps.tolist(), input_signal, output_signal),
+        create_signal_waveform_figure(input_signal, output_signal, time_ps.tolist()),
         use_container_width=True,
     )
     st.latex(r"\sigma_{out}=\sigma_{in}\sqrt{1+\left(\frac{\beta_2 L}{\sigma_{in}^2}\right)^2}")
