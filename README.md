@@ -12,7 +12,7 @@ FiberLab is a Streamlit-based educational application that turns physics concept
 
 **[Open FiberLab](https://fiberlab-xjlvqbfj8kskptzbwddwwc.streamlit.app/)**
 
-## Modules
+## Public modules
 
 | Module | What you can explore |
 |---|---|
@@ -20,7 +20,8 @@ FiberLab is a Streamlit-based educational application that turns physics concept
 | De Broglie Matter Waves | Matter-wave wavelength calculator, particle presets, physical-distance wave visualization, particle wavelength comparison, and wavelength-versus-velocity graph |
 | Attenuation Laboratory | Output power and total-loss calculations, with a power-versus-distance graph |
 | Signal Propagation | Gaussian pulse input/output comparison using a second-order dispersion model |
-| Guardian | Repository inspection and integration-support dashboard |
+
+The Guardian developer dashboard is intentionally excluded from the public Streamlit navigation. Its source code remains in the repository for development and maintenance.
 
 ## Run locally
 
@@ -77,7 +78,7 @@ The signal page uses an educational Gaussian pulse broadening relation with seco
 - `physics/` — pure calculation and simulation models
 - `visualization/` — Plotly figures, independent of Streamlit
 - `components/` — reusable UI components
-- `guardian/` — Guardian inspection and integration tools
+- `guardian/` — developer-only Guardian inspection and integration tools
 - `tests/` — unit, contract and application tests
 - `docs/` — integration and developer documentation
 
