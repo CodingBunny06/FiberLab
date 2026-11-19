@@ -87,11 +87,3 @@ The signal page uses an educational Gaussian pulse broadening relation with seco
 Guardian includes GitHub pull-request inspection and an optional action that can publish a report as a PR comment. Do not expose a GitHub token through a public deployment's shared secrets. PR inspection should remain static for untrusted contributions; do not execute untrusted PR code.
 
 See [SECURITY.md](SECURITY.md) for Guardian's security model and known limitations.
-
-## Project status
-
-FiberLab is deployed on Streamlit Community Cloud. The merged `main` branch has passed the project's automated CI checks, and the application has been launched successfully from the local repository.
-
-## Academic presentation note
-
-For the professor's requested demonstration, focus on **De Broglie Matter Waves**. The optical-fiber experiments remain separate modules within the same FiberLab application and need not be included in that focused presentation or report.
